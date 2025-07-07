@@ -1,5 +1,7 @@
 package tests;
 
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -7,6 +9,12 @@ import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
 
 public class RestAPIReqresTests {
+
+    @BeforeAll
+    static void setup() {
+        RestAssured.baseURI = "https://reqres.in";
+        RestAssured.basePath = "/api";
+    }
 
     @Test
     void successfulLoginTest(){
@@ -18,7 +26,7 @@ public class RestAPIReqresTests {
                 .log().uri()
 
         .when()
-                .post("https://reqres.in/api/login")
+                .post("/login")
 
         .then()
                 .log().status()
@@ -37,7 +45,7 @@ public class RestAPIReqresTests {
                 .log().uri()
 
         .when()
-                .post("https://reqres.in/api/register")
+                .post("/register")
 
         .then()
                 .log().status()
@@ -56,7 +64,7 @@ public class RestAPIReqresTests {
                 .log().uri()
 
         .when()
-                .post("https://reqres.in/api/login")
+                .post("/login")
 
         .then()
                 .log().status()
@@ -75,7 +83,7 @@ public class RestAPIReqresTests {
                 .log().uri()
 
         .when()
-                .post("https://reqres.in/api/users")
+                .post("/users")
 
         .then()
                 .log().status()
@@ -92,7 +100,7 @@ public class RestAPIReqresTests {
                 .log().uri()
 
                 .when()
-                .get("https://reqres.in/api/users/23")
+                .get("/users/23")
 
                 .then()
                 .log().status()
@@ -107,7 +115,7 @@ public class RestAPIReqresTests {
                 .log().uri()
 
                 .when()
-                .get("https://reqres.in/api/users/2")
+                .get("/users/2")
 
                 .then()
                 .log().status()
