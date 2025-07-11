@@ -24,10 +24,10 @@ public class RestAPIReqresTests {
                 .contentType(JSON)
                 .header("x-api-key", "reqres-free-v1")
                 .log().uri()
-
+                .log().body()
+                .log().headers()
         .when()
                 .post("/login")
-
         .then()
                 .log().status()
                 .log().body()
@@ -43,10 +43,10 @@ public class RestAPIReqresTests {
                 .contentType(JSON)
                 .header("x-api-key", "reqres-free-v1")
                 .log().uri()
-
+                .log().body()
+                .log().headers()
         .when()
                 .post("/register")
-
         .then()
                 .log().status()
                 .log().body()
@@ -62,10 +62,10 @@ public class RestAPIReqresTests {
                 .contentType(JSON)
                 .header("x-api-key", "reqres-free-v1")
                 .log().uri()
-
+                .log().body()
+                .log().headers()
         .when()
                 .post("/login")
-
         .then()
                 .log().status()
                 .log().body()
@@ -81,10 +81,10 @@ public class RestAPIReqresTests {
                 .contentType(JSON)
                 .header("x-api-key", "reqres-free-v1")
                 .log().uri()
-
+                .log().body()
+                .log().headers()
         .when()
                 .post("/users")
-
         .then()
                 .log().status()
                 .log().body()
@@ -98,11 +98,11 @@ public class RestAPIReqresTests {
         given()
                 .header("x-api-key", "reqres-free-v1")
                 .log().uri()
-
-                .when()
+                .log().body()
+                .log().headers()
+        .when()
                 .get("/users/23")
-
-                .then()
+        .then()
                 .log().status()
                 .log().body()
                 .statusCode(404);
@@ -113,15 +113,70 @@ public class RestAPIReqresTests {
         given()
                 .header("x-api-key", "reqres-free-v1")
                 .log().uri()
-
-                .when()
+                .log().body()
+                .log().headers()
+        .when()
                 .get("/users/2")
-
-                .then()
+        .then()
                 .log().status()
                 .log().body()
                 .statusCode(200)
                 .body("data.id", is(2))
                 .body("data.first_name", is("Janet"));
+    }
+
+    @Test
+    void deleteUserTest() {
+        given()
+                .header("x-api-key", "reqres-free-v1")
+                .log().uri()
+                .log().body()
+                .log().headers()
+        .when()
+                .delete("/users/2")
+        .then()
+                .log().status()
+                .log().body()
+                .statusCode(204);
+    }
+
+    @Test
+    void updateInfoPutTest(){
+        String authData = "{\"name\": \"morpheus\",\"job\": \"zion resident\"}";
+        given()
+                .header("x-api-key", "reqres-free-v1")
+                .body(authData)
+                .contentType(JSON)
+                .log().uri()
+                .log().body()
+                .log().headers()
+        .when()
+                .put("/users/2")
+        .then()
+                .log().status()
+                .log().body()
+                .statusCode(200)
+                .body("name", is("morpheus"))
+                .body("job", is("zion resident"));
+    }
+
+    @Test
+    void updateInfoPatchTest(){
+        String authData = "{\"name\": \"morpheus\",\"job\": \"zion resident\"}";
+        given()
+                .header("x-api-key", "reqres-free-v1")
+                .body(authData)
+                .contentType(JSON)
+                .log().uri()
+                .log().body()
+                .log().headers()
+        .when()
+                .patch("/users/2")
+        .then()
+                .log().status()
+                .log().body()
+                .statusCode(200)
+                .body("name", is("morpheus"))
+                .body("job", is("zion resident"));
     }
 }
