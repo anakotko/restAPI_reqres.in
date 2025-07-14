@@ -1,14 +1,11 @@
 package tests;
 
-import io.restassured.RestAssured;
 import models.lombok.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -20,6 +17,7 @@ import static specs.LoginSpec.responceSpec;
 public class RestAPIReqresTests {
 
     @Test
+    @DisplayName("Успешный вход в систему")
     void successfulLoginTest() {
         LoginBodyLombokModel authData = new LoginBodyLombokModel();
         authData.setEmail("eve.holt@reqres.in");
@@ -39,6 +37,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
+    @DisplayName("Успешная регистрация")
     void successfulRegisterTest() {
         LoginBodyLombokModel authData = new LoginBodyLombokModel();
         authData.setEmail("eve.holt@reqres.in");
@@ -61,6 +60,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
+    @DisplayName("Пользователь не найден (неверный email)")
     void userNotFoundTest() {
         LoginBodyLombokModel authData = new LoginBodyLombokModel();
         authData.setEmail("every78.holt@reqres.in");
@@ -80,6 +80,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
+    @DisplayName("Успешное создание нового пользователя")
     void createUserTest() {
         UserBodyModel userData = new UserBodyModel();
         userData.setName("morpheus");
@@ -108,6 +109,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
+    @DisplayName("Конкретный пользователь не найден")
     void singleUserNotFoundTest() {
         step("Make request: Single User Not Found", ()->
         given(requestSpec)
@@ -119,6 +121,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
+    @DisplayName("Успешное получение данных конкретного пользователя")
     void singleUserTest() {
         SingleUserResponseModel responce = step("Make request: Get single user data", ()->
         given(requestSpec)
@@ -137,6 +140,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
+    @DisplayName("Успешное удаление пользователя")
     void deleteUserTest() {
         step("Make request: Delete user and check status code", ()->
         given(requestSpec)
@@ -147,6 +151,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
+    @DisplayName("Полное обновление пользователя (PUT)")
     void updateInfoPutTest() {
         UserBodyModel userPutData = new UserBodyModel();
         userPutData.setName("morpheus");
@@ -172,6 +177,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
+    @DisplayName("Частичное обновление пользователя (PATCH)")
     void updateInfoPatchTest() {
         UserBodyModel userPatchData = new UserBodyModel();
         userPatchData.setName("morpheus");
