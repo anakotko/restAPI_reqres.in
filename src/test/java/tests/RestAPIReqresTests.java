@@ -1,182 +1,196 @@
 package tests;
 
 import io.restassured.RestAssured;
+import models.lombok.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static specs.LoginSpec.requestSpec;
+import static specs.LoginSpec.responceSpec;
 
 public class RestAPIReqresTests {
 
-    @BeforeAll
-    static void setup() {
-        RestAssured.baseURI = "https://reqres.in";
-        RestAssured.basePath = "/api";
-    }
-
     @Test
     void successfulLoginTest() {
-        String authData = "{\"email\": \"eve.holt@reqres.in\",\"password\": \"cityslicka\"}";
-        given()
+        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        authData.setEmail("eve.holt@reqres.in");
+        authData.setPassword("cityslicka");
+
+        LoginResponceLombokModel responce = step("Make request: Successful login", ()->
+        given(requestSpec)
                 .body(authData)
-                .contentType(JSON)
-                .header("x-api-key", "reqres-free-v1")
-                .log().uri()
-                .log().body()
-                .log().headers()
                 .when()
                 .post("/login")
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("token", is("QpwL5tke4Pnpja7X4"));
+                .spec(responceSpec(200))
+                .extract().as(LoginResponceLombokModel.class));
+
+        step("Check token", ()->
+                assertEquals("QpwL5tke4Pnpja7X4", responce.getToken()));
     }
 
     @Test
     void successfulRegisterTest() {
-        String authData = "{\"email\":\"eve.holt@reqres.in\",\"password\": \"pistol\"}";
-        given()
+        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        authData.setEmail("eve.holt@reqres.in");
+        authData.setPassword("pistol");
+
+        LoginResponceLombokModel responce = step("Make request: Register new user", ()->
+        given(requestSpec)
                 .body(authData)
-                .contentType(JSON)
-                .header("x-api-key", "reqres-free-v1")
-                .log().uri()
-                .log().body()
-                .log().headers()
                 .when()
                 .post("/register")
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("token", is("QpwL5tke4Pnpja7X4"));
+                .spec(responceSpec(200))
+                .extract().as(LoginResponceLombokModel.class));
+
+        step("Check token", ()->
+                assertEquals("QpwL5tke4Pnpja7X4", responce.getToken()));
+
+        step("Check ID", () ->
+                assertThat(responce.getId(),not(emptyOrNullString())));
     }
 
     @Test
     void userNotFoundTest() {
-        String authData = "{\"email\": \"every78.holt@reqres.in\",\"password\": \"cityslicka\"}";
-        given()
+        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        authData.setEmail("every78.holt@reqres.in");
+        authData.setPassword("cityslicka");
+
+        LoginErrorResponseModel responce = step("Make request: User not found", ()->
+        given(requestSpec)
                 .body(authData)
-                .contentType(JSON)
-                .header("x-api-key", "reqres-free-v1")
-                .log().uri()
-                .log().body()
-                .log().headers()
                 .when()
                 .post("/login")
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(400)
-                .body("error", is("user not found"));
+                .spec(responceSpec(400))
+                .extract().as(LoginErrorResponseModel.class));
+
+        step("Check error message", () ->
+                assertEquals("user not found", responce.getError()));
     }
 
     @Test
     void createUserTest() {
-        String authData = "{\"name\": \"morpheus\",\"job\": \"leader\"}";
-        given()
-                .body(authData)
-                .contentType(JSON)
-                .header("x-api-key", "reqres-free-v1")
-                .log().uri()
-                .log().body()
-                .log().headers()
+        UserBodyModel userData = new UserBodyModel();
+        userData.setName("morpheus");
+        userData.setJob("leader");
+
+        UserResponceModel responce = step("Make request: Create User", ()->
+        given(requestSpec)
+                .body(userData)
                 .when()
                 .post("/users")
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(201)
-                .body("name", is("morpheus"))
-                .body("job", is("leader"));
+                .spec(responceSpec(201))
+                .extract().as(UserResponceModel.class));
+
+        step("Check name", ()->
+                assertEquals("morpheus", responce.getName()));
+
+        step("Check job", ()->
+                assertEquals("leader", responce.getJob()));
+
+        step("Check ID", () ->
+                assertThat(responce.getId(),not(emptyOrNullString())));
+
+        step("Check createdAt", () ->
+                assertThat(responce.getCreatedAt(),not(emptyOrNullString())));
     }
 
     @Test
     void singleUserNotFoundTest() {
-        given()
-                .header("x-api-key", "reqres-free-v1")
-                .log().uri()
-                .log().body()
-                .log().headers()
+        step("Make request: Single User Not Found", ()->
+        given(requestSpec)
                 .when()
                 .get("/users/23")
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(404);
+                .spec(responceSpec(404)));
+
     }
 
     @Test
     void singleUserTest() {
-        given()
-                .header("x-api-key", "reqres-free-v1")
-                .log().uri()
-                .log().body()
-                .log().headers()
+        SingleUserResponseModel responce = step("Make request: Get single user data", ()->
+        given(requestSpec)
                 .when()
                 .get("/users/2")
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("data.id", is(2))
-                .body("data.first_name", is("Janet"));
+                .spec(responceSpec(200))
+                .extract().as(SingleUserResponseModel.class));
+
+        step("Check ID", ()->
+        assertEquals(2, responce.getData().getId()));
+
+        step("Check name", ()->
+        assertEquals("Janet", responce.getData().getFirstName()));
+
     }
 
     @Test
     void deleteUserTest() {
-        given()
-                .header("x-api-key", "reqres-free-v1")
-                .log().uri()
-                .log().body()
-                .log().headers()
+        step("Make request: Delete user and check status code", ()->
+        given(requestSpec)
                 .when()
                 .delete("/users/2")
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(204);
+                .spec(responceSpec(204)));
     }
 
     @Test
     void updateInfoPutTest() {
-        String authData = "{\"name\": \"morpheus\",\"job\": \"zion resident\"}";
-        given()
-                .header("x-api-key", "reqres-free-v1")
-                .body(authData)
-                .contentType(JSON)
-                .log().uri()
-                .log().body()
-                .log().headers()
+        UserBodyModel userPutData = new UserBodyModel();
+        userPutData.setName("morpheus");
+        userPutData.setJob("zion resident");
+
+        UserResponceModel responce = step("Make request: Update user information, PUT", ()->
+        given(requestSpec)
+                .body(userPutData)
                 .when()
                 .put("/users/2")
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("name", is("morpheus"))
-                .body("job", is("zion resident"));
+                .spec(responceSpec(200))
+                .extract().as(UserResponceModel.class));
+
+        step("Check name", ()->
+                assertEquals("morpheus", responce.getName()));
+
+        step("Check job", ()->
+                assertEquals("zion resident", responce.getJob()));
+
+        step("Check updatedAt", () ->
+                assertThat(responce.getUpdatedAt(),not(emptyOrNullString())));
     }
 
     @Test
     void updateInfoPatchTest() {
-        String authData = "{\"name\": \"morpheus\",\"job\": \"zion resident\"}";
-        given()
-                .header("x-api-key", "reqres-free-v1")
-                .body(authData)
-                .contentType(JSON)
-                .log().uri()
-                .log().body()
-                .log().headers()
+        UserBodyModel userPatchData = new UserBodyModel();
+        userPatchData.setName("morpheus");
+        userPatchData.setJob("zion resident");
+
+        UserResponceModel responce = step("Make request: Update user information, Patch", ()->
+        given(requestSpec)
+                .body(userPatchData)
                 .when()
                 .patch("/users/2")
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("name", is("morpheus"))
-                .body("job", is("zion resident"));
+                .spec(responceSpec(200))
+                .extract().as(UserResponceModel.class));
+
+        step("Check name", ()->
+                assertEquals("morpheus", responce.getName()));
+
+        step("Check job", ()->
+                assertEquals("zion resident", responce.getJob()));
+
+        step("Check updatedAt", () ->
+                assertThat(responce.getUpdatedAt(),not(emptyOrNullString())));
     }
 }
