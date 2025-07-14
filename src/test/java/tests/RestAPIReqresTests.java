@@ -17,7 +17,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
-    void successfulLoginTest(){
+    void successfulLoginTest() {
         String authData = "{\"email\": \"eve.holt@reqres.in\",\"password\": \"cityslicka\"}";
         given()
                 .body(authData)
@@ -26,9 +26,9 @@ public class RestAPIReqresTests {
                 .log().uri()
                 .log().body()
                 .log().headers()
-        .when()
+                .when()
                 .post("/login")
-        .then()
+                .then()
                 .log().status()
                 .log().body()
                 .statusCode(200)
@@ -36,7 +36,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
-    void successfulRegisterTest(){
+    void successfulRegisterTest() {
         String authData = "{\"email\":\"eve.holt@reqres.in\",\"password\": \"pistol\"}";
         given()
                 .body(authData)
@@ -45,9 +45,9 @@ public class RestAPIReqresTests {
                 .log().uri()
                 .log().body()
                 .log().headers()
-        .when()
+                .when()
                 .post("/register")
-        .then()
+                .then()
                 .log().status()
                 .log().body()
                 .statusCode(200)
@@ -55,7 +55,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
-    void userNotFoundTest(){
+    void userNotFoundTest() {
         String authData = "{\"email\": \"every78.holt@reqres.in\",\"password\": \"cityslicka\"}";
         given()
                 .body(authData)
@@ -64,9 +64,9 @@ public class RestAPIReqresTests {
                 .log().uri()
                 .log().body()
                 .log().headers()
-        .when()
+                .when()
                 .post("/login")
-        .then()
+                .then()
                 .log().status()
                 .log().body()
                 .statusCode(400)
@@ -74,7 +74,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
-    void createUserTest(){
+    void createUserTest() {
         String authData = "{\"name\": \"morpheus\",\"job\": \"leader\"}";
         given()
                 .body(authData)
@@ -83,9 +83,9 @@ public class RestAPIReqresTests {
                 .log().uri()
                 .log().body()
                 .log().headers()
-        .when()
+                .when()
                 .post("/users")
-        .then()
+                .then()
                 .log().status()
                 .log().body()
                 .statusCode(201)
@@ -94,30 +94,30 @@ public class RestAPIReqresTests {
     }
 
     @Test
-    void singleUserNotFoundTest(){
+    void singleUserNotFoundTest() {
         given()
                 .header("x-api-key", "reqres-free-v1")
                 .log().uri()
                 .log().body()
                 .log().headers()
-        .when()
+                .when()
                 .get("/users/23")
-        .then()
+                .then()
                 .log().status()
                 .log().body()
                 .statusCode(404);
     }
 
     @Test
-    void singleUserTest(){
+    void singleUserTest() {
         given()
                 .header("x-api-key", "reqres-free-v1")
                 .log().uri()
                 .log().body()
                 .log().headers()
-        .when()
+                .when()
                 .get("/users/2")
-        .then()
+                .then()
                 .log().status()
                 .log().body()
                 .statusCode(200)
@@ -132,16 +132,16 @@ public class RestAPIReqresTests {
                 .log().uri()
                 .log().body()
                 .log().headers()
-        .when()
+                .when()
                 .delete("/users/2")
-        .then()
+                .then()
                 .log().status()
                 .log().body()
                 .statusCode(204);
     }
 
     @Test
-    void updateInfoPutTest(){
+    void updateInfoPutTest() {
         String authData = "{\"name\": \"morpheus\",\"job\": \"zion resident\"}";
         given()
                 .header("x-api-key", "reqres-free-v1")
@@ -150,9 +150,9 @@ public class RestAPIReqresTests {
                 .log().uri()
                 .log().body()
                 .log().headers()
-        .when()
+                .when()
                 .put("/users/2")
-        .then()
+                .then()
                 .log().status()
                 .log().body()
                 .statusCode(200)
@@ -161,7 +161,7 @@ public class RestAPIReqresTests {
     }
 
     @Test
-    void updateInfoPatchTest(){
+    void updateInfoPatchTest() {
         String authData = "{\"name\": \"morpheus\",\"job\": \"zion resident\"}";
         given()
                 .header("x-api-key", "reqres-free-v1")
@@ -170,9 +170,9 @@ public class RestAPIReqresTests {
                 .log().uri()
                 .log().body()
                 .log().headers()
-        .when()
+                .when()
                 .patch("/users/2")
-        .then()
+                .then()
                 .log().status()
                 .log().body()
                 .statusCode(200)
