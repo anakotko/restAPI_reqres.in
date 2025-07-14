@@ -3,6 +3,7 @@ package tests;
 import io.restassured.RestAssured;
 import models.lombok.*;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.LoginSpec.requestSpec;
 import static specs.LoginSpec.responceSpec;
 
+@Tag("all_api")
 public class RestAPIReqresTests {
 
     @Test
