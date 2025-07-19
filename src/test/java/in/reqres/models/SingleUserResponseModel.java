@@ -1,4 +1,4 @@
-package models.lombok;
+package in.reqres.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -28,22 +28,3 @@ public class SingleUserResponseModel {
         private String text;
     }
 }
-//
-//    private UserData data;
-//    private Support support;
-//}
-//
-//@Data
-//public class UserData {
-//    private int id;
-//    private String email;
-//    private String first_name;
-//    private String last_name;
-//    private String avatar;
-//}
-//
-//@Data
-//public class Support {
-//    private String url;
-//    private String text;
-//}

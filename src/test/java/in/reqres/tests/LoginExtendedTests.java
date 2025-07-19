@@ -1,25 +1,19 @@
-package tests;
+package in.reqres.tests;
 
-import models.lombok.LoginBodyLombokModel;
-import models.lombok.LoginResponceLombokModel;
-import models.pojo.LoginBodyModel;
-import models.pojo.LoginResponceModel;
+import in.reqres.models.LoginBodyLombokModel;
+import in.reqres.models.LoginResponceLombokModel;
+import in.reqres.models.LoginBodyModel;
+import in.reqres.models.LoginResponceModel;
 import org.junit.jupiter.api.Test;
 
-import static helpers.CustomAllureListener.withCustomTemplates;
+import static in.reqres.helpers.CustomAllureListener.withCustomTemplates;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static specs.LoginSpec.*;
+import static in.reqres.specs.LoginSpec.*;
 
 public class LoginExtendedTests  {
-
-//    @BeforeAll
-//    static void setup() {
-//        RestAssured.baseURI = "https://reqres.in";
-//        RestAssured.basePath = "/api";
-//    }
 
     @Test
     void successfulLoginPojoTest(){
@@ -43,7 +37,6 @@ public class LoginExtendedTests  {
                 .extract().as(LoginResponceModel.class);
 
         assertEquals("QpwL5tke4Pnpja7X4", responce.getToken());
-//                .body("token", is("QpwL5tke4Pnpja7X4"));
     }
 
     @Test

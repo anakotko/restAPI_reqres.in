@@ -1,4 +1,4 @@
-package models.pojo;
+package in.reqres.models;
 
 public class LoginResponceModel {
 
