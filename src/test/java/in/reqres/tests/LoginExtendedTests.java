@@ -1,8 +1,7 @@
 package in.reqres.tests;
 
-import com.demoqa.tests.TestBase;
-import in.reqres.models.LoginBodyLombokModel;
-import in.reqres.models.LoginResponceLombokModel;
+import in.reqres.models.LoginBodyModel;
+import in.reqres.models.LoginResponseModel;
 import org.junit.jupiter.api.Test;
 
 import static in.reqres.helpers.CustomAllureListener.withCustomTemplates;
@@ -16,11 +15,11 @@ public class LoginExtendedTests extends TestBase {
 
     @Test
     void successfulLoginPojoTest(){
-        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        LoginBodyModel authData = new LoginBodyModel();
         authData.setEmail("eve.holt@reqres.in");
         authData.setPassword("cityslicka");
 
-        LoginResponceLombokModel responce = given()
+        LoginResponseModel responce = given()
                 .body(authData)
                 .contentType(JSON)
                 .header("x-api-key", "reqres-free-v1")
@@ -33,18 +32,18 @@ public class LoginExtendedTests extends TestBase {
                 .log().status()
                 .log().body()
                 .statusCode(200)
-                .extract().as(LoginResponceLombokModel.class);
+                .extract().as(LoginResponseModel.class);
 
         assertEquals("QpwL5tke4Pnpja7X4", responce.getToken());
     }
 
     @Test
     void successfulLoginLombokTest(){
-        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        LoginBodyModel authData = new LoginBodyModel();
         authData.setEmail("eve.holt@reqres.in");
         authData.setPassword("cityslicka");
 
-        LoginResponceLombokModel responce = given()
+        LoginResponseModel responce = given()
                 .body(authData)
                 .contentType(JSON)
                 .header("x-api-key", "reqres-free-v1")
@@ -59,18 +58,18 @@ public class LoginExtendedTests extends TestBase {
                 .log().status()
                 .log().body()
                 .statusCode(200)
-                .extract().as(LoginResponceLombokModel.class);
+                .extract().as(LoginResponseModel.class);
 
         assertEquals("QpwL5tke4Pnpja7X4", responce.getToken());
     }
 
     @Test
     void successfulLoginCustomAllureTest(){
-        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        LoginBodyModel authData = new LoginBodyModel();
         authData.setEmail("eve.holt@reqres.in");
         authData.setPassword("cityslicka");
 
-        LoginResponceLombokModel responce = given()
+        LoginResponseModel responce = given()
                 .filter(withCustomTemplates())
                 .log().uri()
                 .log().body()
@@ -87,18 +86,18 @@ public class LoginExtendedTests extends TestBase {
                 .log().status()
                 .log().body()
                 .statusCode(200)
-                .extract().as(LoginResponceLombokModel.class);
+                .extract().as(LoginResponseModel.class);
 
         assertEquals("QpwL5tke4Pnpja7X4", responce.getToken());
     }
 
     @Test
     void successfulLoginWithStepsTest(){
-        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        LoginBodyModel authData = new LoginBodyModel();
         authData.setEmail("eve.holt@reqres.in");
         authData.setPassword("cityslicka");
 
-        LoginResponceLombokModel responce = step("Make request", ()->
+        LoginResponseModel responce = step("Make request", ()->
            given()
                 .filter(withCustomTemplates())
                 .log().uri()
@@ -116,7 +115,7 @@ public class LoginExtendedTests extends TestBase {
                 .log().status()
                 .log().body()
                 .statusCode(200)
-                .extract().as(LoginResponceLombokModel.class));
+                .extract().as(LoginResponseModel.class));
 
         step("Check response", ()->
         assertEquals("QpwL5tke4Pnpja7X4", responce.getToken()));
@@ -124,11 +123,11 @@ public class LoginExtendedTests extends TestBase {
 
     @Test
     void successfulLoginWithSpecsTest(){
-        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        LoginBodyModel authData = new LoginBodyModel();
         authData.setEmail("eve.holt@reqres.in");
         authData.setPassword("cityslicka");
 
-        LoginResponceLombokModel responce = step("Make request", ()->
+        LoginResponseModel responce = step("Make request", ()->
                 given(requestSpec)
                         .body(authData)
 
@@ -137,7 +136,7 @@ public class LoginExtendedTests extends TestBase {
 
                 .then()
                         .spec(responceSpec(200))
-                        .extract().as(LoginResponceLombokModel.class));
+                        .extract().as(LoginResponseModel.class));
 
         step("Check response", ()->
                 assertEquals("QpwL5tke4Pnpja7X4", responce.getToken()));

@@ -1,6 +1,5 @@
 package in.reqres.tests;
 
-import com.demoqa.tests.TestBase;
 import in.reqres.models.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
@@ -20,18 +19,18 @@ public class RestAPIReqresTests extends TestBase {
     @Test
     @DisplayName("Успешный вход в систему")
     void successfulLoginTest() {
-        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        LoginBodyModel authData = new LoginBodyModel();
         authData.setEmail("eve.holt@reqres.in");
         authData.setPassword("cityslicka");
 
-        LoginResponceLombokModel responce = step("Make request: Successful login", ()->
+        LoginResponseModel responce = step("Make request: Successful login", ()->
         given(requestSpec)
                 .body(authData)
                 .when()
                 .post("/login")
                 .then()
                 .spec(responceSpec(200))
-                .extract().as(LoginResponceLombokModel.class));
+                .extract().as(LoginResponseModel.class));
 
         step("Check token", ()->
                 assertEquals("QpwL5tke4Pnpja7X4", responce.getToken()));
@@ -40,18 +39,18 @@ public class RestAPIReqresTests extends TestBase {
     @Test
     @DisplayName("Успешная регистрация")
     void successfulRegisterTest() {
-        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        LoginBodyModel authData = new LoginBodyModel();
         authData.setEmail("eve.holt@reqres.in");
         authData.setPassword("pistol");
 
-        LoginResponceLombokModel responce = step("Make request: Register new user", ()->
+        LoginResponseModel responce = step("Make request: Register new user", ()->
         given(requestSpec)
                 .body(authData)
                 .when()
                 .post("/register")
                 .then()
                 .spec(responceSpec(200))
-                .extract().as(LoginResponceLombokModel.class));
+                .extract().as(LoginResponseModel.class));
 
         step("Check token", ()->
                 assertEquals("QpwL5tke4Pnpja7X4", responce.getToken()));
@@ -63,7 +62,7 @@ public class RestAPIReqresTests extends TestBase {
     @Test
     @DisplayName("Пользователь не найден (неверный email)")
     void userNotFoundTest() {
-        LoginBodyLombokModel authData = new LoginBodyLombokModel();
+        LoginBodyModel authData = new LoginBodyModel();
         authData.setEmail("every78.holt@reqres.in");
         authData.setPassword("cityslicka");
 
