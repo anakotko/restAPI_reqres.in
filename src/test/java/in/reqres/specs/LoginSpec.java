@@ -18,9 +18,7 @@ public class LoginSpec {
             .log().body()
             .log().headers()
             .header("x-api-key", "reqres-free-v1")
-            .contentType(JSON)
-            .baseUri("https://reqres.in")
-            .basePath("/api");
+            .contentType(JSON);
 
     public static ResponseSpecification responceSpec (int expectedStatusCode) {
         return new ResponseSpecBuilder()

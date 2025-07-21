@@ -1,9 +1,8 @@
 package in.reqres.tests;
 
+import com.demoqa.tests.TestBase;
 import in.reqres.models.LoginBodyLombokModel;
 import in.reqres.models.LoginResponceLombokModel;
-import in.reqres.models.LoginBodyModel;
-import in.reqres.models.LoginResponceModel;
 import org.junit.jupiter.api.Test;
 
 import static in.reqres.helpers.CustomAllureListener.withCustomTemplates;
@@ -13,15 +12,15 @@ import static io.restassured.http.ContentType.JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static in.reqres.specs.LoginSpec.*;
 
-public class LoginExtendedTests  {
+public class LoginExtendedTests extends TestBase {
 
     @Test
     void successfulLoginPojoTest(){
-        LoginBodyModel authData = new LoginBodyModel();
+        LoginBodyLombokModel authData = new LoginBodyLombokModel();
         authData.setEmail("eve.holt@reqres.in");
         authData.setPassword("cityslicka");
 
-        LoginResponceModel responce = given()
+        LoginResponceLombokModel responce = given()
                 .body(authData)
                 .contentType(JSON)
                 .header("x-api-key", "reqres-free-v1")
@@ -34,7 +33,7 @@ public class LoginExtendedTests  {
                 .log().status()
                 .log().body()
                 .statusCode(200)
-                .extract().as(LoginResponceModel.class);
+                .extract().as(LoginResponceLombokModel.class);
 
         assertEquals("QpwL5tke4Pnpja7X4", responce.getToken());
     }
