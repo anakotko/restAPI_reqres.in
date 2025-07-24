@@ -13,15 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static in.reqres.specs.LoginSpec.requestSpec;
 import static in.reqres.specs.LoginSpec.responceSpec;
 
-
+@Tag("reqres_api")
 public class RestAPIReqresTests extends TestBase {
 
     @Test
     @DisplayName("Успешный вход в систему")
     void successfulLoginTest() {
-        LoginBodyModel authData = new LoginBodyModel();
-        authData.setEmail("eve.holt@reqres.in");
-        authData.setPassword("cityslicka");
+        LoginBodyModel authData = new LoginBodyModel("eve.holt@reqres.in", "cityslicka");
 
         LoginResponseModel responce = step("Make request: Successful login", ()->
         given(requestSpec)
@@ -39,9 +37,7 @@ public class RestAPIReqresTests extends TestBase {
     @Test
     @DisplayName("Успешная регистрация")
     void successfulRegisterTest() {
-        LoginBodyModel authData = new LoginBodyModel();
-        authData.setEmail("eve.holt@reqres.in");
-        authData.setPassword("pistol");
+        LoginBodyModel authData = new LoginBodyModel("eve.holt@reqres.in", "cityslicka");
 
         LoginResponseModel responce = step("Make request: Register new user", ()->
         given(requestSpec)
@@ -62,9 +58,7 @@ public class RestAPIReqresTests extends TestBase {
     @Test
     @DisplayName("Пользователь не найден (неверный email)")
     void userNotFoundTest() {
-        LoginBodyModel authData = new LoginBodyModel();
-        authData.setEmail("every78.holt@reqres.in");
-        authData.setPassword("cityslicka");
+        LoginBodyModel authData = new LoginBodyModel("eve.holt@reqres.in", "cityslicka");
 
         LoginErrorResponseModel responce = step("Make request: User not found", ()->
         given(requestSpec)
@@ -82,9 +76,7 @@ public class RestAPIReqresTests extends TestBase {
     @Test
     @DisplayName("Успешное создание нового пользователя")
     void createUserTest() {
-        UserBodyModel userData = new UserBodyModel();
-        userData.setName("morpheus");
-        userData.setJob("leader");
+        UserBodyModel userData = new UserBodyModel("morpheus", "leader");
 
         UserResponceModel responce = step("Make request: Create User", ()->
         given(requestSpec)
@@ -153,9 +145,7 @@ public class RestAPIReqresTests extends TestBase {
     @Test
     @DisplayName("Полное обновление пользователя (PUT)")
     void updateInfoPutTest() {
-        UserBodyModel userPutData = new UserBodyModel();
-        userPutData.setName("morpheus");
-        userPutData.setJob("zion resident");
+        UserBodyModel userPutData = new UserBodyModel("morpheus", "zion resident");
 
         UserResponceModel responce = step("Make request: Update user information, PUT", ()->
         given(requestSpec)
@@ -179,9 +169,7 @@ public class RestAPIReqresTests extends TestBase {
     @Test
     @DisplayName("Частичное обновление пользователя (PATCH)")
     void updateInfoPatchTest() {
-        UserBodyModel userPatchData = new UserBodyModel();
-        userPatchData.setName("morpheus");
-        userPatchData.setJob("zion resident");
+        UserBodyModel userPatchData = new UserBodyModel("morpheus", "zion resident");
 
         UserResponceModel responce = step("Make request: Update user information, Patch", ()->
         given(requestSpec)

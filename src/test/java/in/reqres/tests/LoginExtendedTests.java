@@ -2,6 +2,7 @@ package in.reqres.tests;
 
 import in.reqres.models.LoginBodyModel;
 import in.reqres.models.LoginResponseModel;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static in.reqres.helpers.CustomAllureListener.withCustomTemplates;
@@ -11,13 +12,12 @@ import static io.restassured.http.ContentType.JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static in.reqres.specs.LoginSpec.*;
 
+@Tag("reqres_api")
 public class LoginExtendedTests extends TestBase {
 
     @Test
     void successfulLoginPojoTest(){
-        LoginBodyModel authData = new LoginBodyModel();
-        authData.setEmail("eve.holt@reqres.in");
-        authData.setPassword("cityslicka");
+        LoginBodyModel authData = new LoginBodyModel("eve.holt@reqres.in", "cityslicka");
 
         LoginResponseModel responce = given()
                 .body(authData)
@@ -39,9 +39,7 @@ public class LoginExtendedTests extends TestBase {
 
     @Test
     void successfulLoginLombokTest(){
-        LoginBodyModel authData = new LoginBodyModel();
-        authData.setEmail("eve.holt@reqres.in");
-        authData.setPassword("cityslicka");
+        LoginBodyModel authData = new LoginBodyModel("eve.holt@reqres.in", "cityslicka");
 
         LoginResponseModel responce = given()
                 .body(authData)
@@ -65,9 +63,7 @@ public class LoginExtendedTests extends TestBase {
 
     @Test
     void successfulLoginCustomAllureTest(){
-        LoginBodyModel authData = new LoginBodyModel();
-        authData.setEmail("eve.holt@reqres.in");
-        authData.setPassword("cityslicka");
+        LoginBodyModel authData = new LoginBodyModel("eve.holt@reqres.in", "cityslicka");
 
         LoginResponseModel responce = given()
                 .filter(withCustomTemplates())
@@ -93,9 +89,7 @@ public class LoginExtendedTests extends TestBase {
 
     @Test
     void successfulLoginWithStepsTest(){
-        LoginBodyModel authData = new LoginBodyModel();
-        authData.setEmail("eve.holt@reqres.in");
-        authData.setPassword("cityslicka");
+        LoginBodyModel authData = new LoginBodyModel("eve.holt@reqres.in", "cityslicka");
 
         LoginResponseModel responce = step("Make request", ()->
            given()
@@ -123,9 +117,7 @@ public class LoginExtendedTests extends TestBase {
 
     @Test
     void successfulLoginWithSpecsTest(){
-        LoginBodyModel authData = new LoginBodyModel();
-        authData.setEmail("eve.holt@reqres.in");
-        authData.setPassword("cityslicka");
+        LoginBodyModel authData = new LoginBodyModel("eve.holt@reqres.in", "cityslicka");
 
         LoginResponseModel responce = step("Make request", ()->
                 given(requestSpec)
